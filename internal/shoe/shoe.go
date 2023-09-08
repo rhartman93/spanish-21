@@ -13,7 +13,7 @@ type Shoe struct {
 	Pile []card.Card
 }
 
-// Might need to use a pointer for shuffling since it manipulates the deck
+// Might need to use a pointer for shuffling since it manipulates the shoe
 // should test
 func (d Shoe) Shuffle() {
 	rand.Seed(time.Now().UnixNano())
@@ -22,20 +22,25 @@ func (d Shoe) Shuffle() {
 	})
 }
 
-func NewShoe() Shoe {
+func NewShoe(numDecks int) (Shoe, error) {
 	myShoe := new(Shoe)
-	for key := range card.ValueMap {
-		for _, suit := range card.Suits {
-			thisCard, err := card.NewCard(key, suit)
-			if err != nil {
-				fmt.Println("something went wrong adding cards to deck")
-				fmt.Println("err")
-				os.Exit(-1)
+	if numDecks < 0 {
+		return *myShoe, errors.New("must have at least 1 deck")
+	}
+	for i := 1; i <= numDecks; i++ {
+		for key := range card.ValueMap {
+			for _, suit := range card.Suits {
+				thisCard, err := card.NewCard(key, suit)
+				if err != nil {
+					fmt.Println("something went wrong adding cards to shoe")
+					fmt.Println(err)
+					os.Exit(-1)
+				}
+				myShoe.Pile = append(myShoe.Pile, thisCard)
 			}
-			myShoe.Pile = append(myShoe.Pile, thisCard)
 		}
 	}
-	return *myShoe
+	return *myShoe, nil
 }
 
 func (d *Shoe) DealCard() (card.Card, error) {

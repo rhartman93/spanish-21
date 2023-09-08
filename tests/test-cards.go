@@ -32,7 +32,8 @@ func testCard() {
 
 func testShoe() {
 	//Create Shoe, print the cards, shuffle it and reprint
-	myShoe := shoe.NewShoe()
+	myShoe, err := shoe.NewShoe(1)
+	check(err)
 	for _, shoeCard := range myShoe.Pile {
 		shoeCard.Print()
 	}
@@ -51,14 +52,15 @@ func main() {
 	testShoe()
 	fmt.Println("")
 	// Test Player Package
-	newPlayer, err := player.NewPlayer("rhartman", 100)
-	check(err)
+	newPlayer, errPlayer := player.NewPlayer("rhartman", 100)
+	check(errPlayer)
 
-	myShoe := shoe.NewShoe()
-	card1, err1 := myShoe.DealCard()
-	check(err1)
-	card2, err2 := myShoe.DealCard()
-	check(err2)
+	myShoe, errShoe1 := shoe.NewShoe(1)
+	check(errShoe1)
+	card1, errDeal1 := myShoe.DealCard()
+	check(errDeal1)
+	card2, errDeal2 := myShoe.DealCard()
+	check(errDeal2)
 
 	newPlayer.Hands[0] = append(newPlayer.Hands[0], card1)
 	newPlayer.Hands[0] = append(newPlayer.Hands[0], card2)
@@ -72,7 +74,7 @@ func main() {
 		Current Problems:
 		* Hand 0 and 1 are the same
 	    * Having to error check every deal of the cards is annoying
-		* Realized that I need to be thinking of Shoes instead of shoes:
+		* Realized that I need to be thinking of Shoes instead of decks:
 		** Probably need to rework the shoe module to be a shoe
 		** Don't need to track individual shoes so construction would be similar
 		** But having one shoe will make testing easier for now so that can wait */
