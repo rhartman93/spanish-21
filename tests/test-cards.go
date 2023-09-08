@@ -74,10 +74,7 @@ func main() {
 		Current Problems:
 		* Hand 0 and 1 are the same
 	    * Having to error check every deal of the cards is annoying
-		* Realized that I need to be thinking of Shoes instead of decks:
-		** Probably need to rework the shoe module to be a shoe
-		** Don't need to track individual shoes so construction would be similar
-		** But having one shoe will make testing easier for now so that can wait */
+	*/
 
 	fmt.Println("Player Hands:")
 	newPlayer.PrintHands()
