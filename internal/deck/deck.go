@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"spanish21/card"
+	"spanish21/internal/card"
 	"time"
 )
 

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
-	"spanish21/card"
-	"spanish21/deck"
-	"spanish21/player"
+	"spanish21/internal/card"
+	"spanish21/internal/deck"
+	"spanish21/internal/player"
 )
 
 func check(err error) {
