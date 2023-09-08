@@ -3,7 +3,7 @@ package player
 import (
 	"errors"
 	"fmt"
-	"spanish21/card"
+	"spanish21/internal/card"
 )
 
 type Player struct {
