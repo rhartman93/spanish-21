@@ -74,6 +74,7 @@ func main() {
 		Current Problems:
 		* Hand 0 and 1 are the same
 	    * Having to error check every deal of the cards is annoying
+		* Convert to proper Go unit testing format
 	*/
 
 	fmt.Println("Player Hands:")
