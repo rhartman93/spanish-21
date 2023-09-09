@@ -2,7 +2,6 @@ package card
 
 import (
 	"errors"
-	"fmt"
 )
 
 var Suits = [4]string{"♣", "♦", "♥", "♠"}
@@ -52,6 +51,6 @@ func NewCard(value string, suit string) (Card, error) {
 	return *thisCard, nil
 }
 
-func (c Card) Print() {
-	fmt.Print("[" + c.DisplayValue + c.Suit + "]")
+func (c Card) String() string {
+	return "[" + c.DisplayValue + c.Suit + "]"
 }

@@ -33,11 +33,9 @@ func (p *Player) AddHand(cards []card.Card) {
 }
 
 func (p Player) PrintHands() {
-	for i, hand := range p.Hands {
-		fmt.Print(i, ": [")
+	for _, hand := range p.Hands {
 		for _, thisCard := range hand {
-			thisCard.Print()
+			fmt.Print(thisCard.String())
 		}
-		fmt.Println("]")
 	}
 }
