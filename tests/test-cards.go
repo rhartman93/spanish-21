@@ -18,7 +18,7 @@ func testCard() {
 	// Create a valid card and print it
 	myCard, err := card.NewCard("J", "♣")
 	check(err)
-	myCard.Print()
+	fmt.Println(myCard.String())
 	// Create a card with invalid value
 	badValue, err := card.NewCard("10", "♣")
 	if err != nil {
@@ -26,7 +26,7 @@ func testCard() {
 		fmt.Println("Properly failed on invalid suit")
 	} else {
 		fmt.Print("Bad card got through: ")
-		badValue.Print()
+		fmt.Println(badValue.String())
 	}
 }
 
@@ -35,12 +35,12 @@ func testShoe() {
 	myShoe, err := shoe.NewShoe(1)
 	check(err)
 	for _, shoeCard := range myShoe.Pile {
-		shoeCard.Print()
+		fmt.Println(shoeCard.String())
 	}
 	myShoe.Shuffle()
 	fmt.Println("")
 	for _, shoeCard := range myShoe.Pile {
-		shoeCard.Print()
+		fmt.Println(shoeCard.String())
 	}
 }
 
