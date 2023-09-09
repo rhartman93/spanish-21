@@ -1,6 +1,7 @@
 package shoe
 
 import (
+	"reflect"
 	"spanish21/internal/card"
 	"testing"
 )
@@ -8,6 +9,27 @@ import (
 // Create list of all legal suit/value pairs for deck sanity testing
 type cardStub struct {
 	displayValue, suit string
+}
+
+func confirmShoeContents(numDecks int, testShoe Shoe, t *testing.T) {
+	// Search shoe for x instances of card where x = numDecks
+	// might be able to replace this with reflect.DeepEqual()
+	cardList := GenerateCardChecks()
+	for _, stub := range *cardList {
+		count := 0
+		for _, thisCard := range testShoe.Pile {
+			if thisCard.DisplayValue == stub.displayValue && thisCard.Suit == stub.suit {
+				count++
+			}
+			if count == numDecks {
+				break
+			}
+		}
+		if count != numDecks {
+			t.Errorf("expected %d instances of card [%s%s] in shoe of size %d but instead found %d", numDecks, stub.displayValue, stub.suit, numDecks, count)
+		}
+	}
+
 }
 
 func GenerateCardChecks() *[]cardStub {
@@ -23,8 +45,6 @@ func GenerateCardChecks() *[]cardStub {
 	return &cs
 }
 func TestCreateValidShoe(t *testing.T) {
-	//Generate card stubs to test deck against
-	cardList := GenerateCardChecks()
 	//Try creating shoes with 1-8 decks
 	for i := 1; i < 8; i++ {
 		gotShoe, err := NewShoe(i)
@@ -37,22 +57,7 @@ func TestCreateValidShoe(t *testing.T) {
 			t.Errorf("expected shoe with %d cards but it contains %d", i*48, len(gotShoe.Pile))
 		}
 		// Search shoe for x instances of card where x = numDecks
-		var count int
-		for _, stub := range *cardList {
-			count = 0
-			for _, thisCard := range gotShoe.Pile {
-				if thisCard.DisplayValue == stub.displayValue && thisCard.Suit == stub.suit {
-					count++
-				}
-				if count == i {
-					break
-				}
-			}
-			if count != i {
-				t.Errorf("expected %d instances of card [%s%s] in shoe of size %d but instead found %d", i, stub.displayValue, stub.suit, i, count)
-			}
-		}
-
+		confirmShoeContents(i, gotShoe, t)
 	}
 }
 
@@ -84,5 +89,22 @@ func TestDealingCards(t *testing.T) {
 		} else if i <= 0 && len(newShoe.Pile) == 0 && err == nil {
 			t.Errorf("didn't return error despite trying to deal from empty deck")
 		}
+	}
+}
+
+func TestShuffling(t *testing.T) {
+	//Create a shoe, keep a copy, run shuffle, ensure the new one isn't in the same order and still has all cards
+	shuffleShoe, _ := NewShoe(1)
+	initialPile := make([]card.Card, len(shuffleShoe.Pile))
+	copy(initialPile, shuffleShoe.Pile)
+
+	shuffleShoe.Shuffle()
+	if len(shuffleShoe.Pile) != len(initialPile) {
+		t.Errorf("shuffling changed amount of cards in deck, initial")
+	}
+	confirmShoeContents(1, shuffleShoe, t)
+
+	if reflect.DeepEqual(initialPile, shuffleShoe.Pile) {
+		t.Errorf("deck order wasn't changed after shuffling")
 	}
 }
