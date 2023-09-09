@@ -50,7 +50,10 @@ func (d *Shoe) DealCard() (card.Card, error) {
 	}
 	dealtCard := d.Pile[len(d.Pile)-1]
 	afterShoe := d.Pile[:len(d.Pile)-1]
+	//There is something wrong with this copy action, it either isn't copying or isn't affecting the Shoe object
+	//likely a pointer related problem
 	copy(d.Pile, afterShoe)
+	fmt.Printf("%d cards in shoe after copy", len(d.Pile))
 
 	return dealtCard, nil
 }
