@@ -56,14 +56,18 @@ func TestCreateValidShoe(t *testing.T) {
 	}
 }
 
-func TestDealingCard(t *testing.T) {
+func TestDealingCards(t *testing.T) {
+	/* Overall test:
+	deal two cards and make sure they're what you expect
+	also make sure they're actually removed from the shoe
+	finally deal the rest of the shoe, and make sure you don't
+	get an error till you try to deal when the shoe's empty
+	*/
 	//Can assume no error here since it's tested in a previous test
 	newShoe, _ := NewShoe(1)
 	wantCard1 := newShoe.Pile[len(newShoe.Pile)-1]
 	wantCard2 := newShoe.Pile[len(newShoe.Pile)-2]
-	t.Logf("%d cards in deck before first deal", len(newShoe.Pile))
 	gotCard1, err1 := newShoe.DealCard()
-	t.Logf("%d cards in deck after first deal", len(newShoe.Pile))
 	gotCard2, err2 := newShoe.DealCard()
 
 	if err1 != nil || err2 != nil {
@@ -71,5 +75,14 @@ func TestDealingCard(t *testing.T) {
 	}
 	if wantCard1 != gotCard1 || wantCard2 != gotCard2 {
 		t.Errorf("expected dealt cards %s%s but got cards %s%s", wantCard1.String(), wantCard2.String(), gotCard1.String(), gotCard2.String())
+	}
+	//Next Step, deal rest of deck + 1, checking for errors, expect error only on final deal when deck is empty
+	for i := 0; i <= len(newShoe.Pile)+1; i++ {
+		_, err := newShoe.DealCard()
+		if i >= len(newShoe.Pile) && err != nil {
+			t.Errorf("There was an error dealing cards when cards still left in shoe: %s", err.Error())
+		} else if i <= 0 && len(newShoe.Pile) == 0 && err == nil {
+			t.Errorf("didn't return error despite trying to deal from empty deck")
+		}
 	}
 }
