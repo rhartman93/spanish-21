@@ -14,47 +14,11 @@ func check(err error) {
 		os.Exit(-1)
 	}
 }
-func testCard() {
-	// Create a valid card and print it
-	myCard, err := card.NewCard("J", "♣")
-	check(err)
-	fmt.Println(myCard.String())
-	// Create a card with invalid value
-	badValue, err := card.NewCard("10", "♣")
-	if err != nil {
-		fmt.Println(err)
-		fmt.Println("Properly failed on invalid suit")
-	} else {
-		fmt.Print("Bad card got through: ")
-		fmt.Println(badValue.String())
-	}
-}
-
-func testShoe() {
-	//Create Shoe, print the cards, shuffle it and reprint
-	myShoe, err := shoe.NewShoe(1)
-	check(err)
-	for _, shoeCard := range myShoe.Pile {
-		fmt.Println(shoeCard.String())
-	}
-	myShoe.Shuffle()
-	fmt.Println("")
-	for _, shoeCard := range myShoe.Pile {
-		fmt.Println(shoeCard.String())
-	}
-}
 
 func main() {
-	// Test Card Package
-	testCard()
-	fmt.Println("")
-	// Test Shoe Package
-	testShoe()
-	fmt.Println("")
 	// Test Player Package
 	newPlayer, errPlayer := player.NewPlayer("rhartman", 100)
 	check(errPlayer)
-
 	myShoe, errShoe1 := shoe.NewShoe(1)
 	check(errShoe1)
 	card1, errDeal1 := myShoe.DealCard()
